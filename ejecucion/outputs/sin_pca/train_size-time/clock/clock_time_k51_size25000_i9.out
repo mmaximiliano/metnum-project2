@@ -1,0 +1,4 @@
+data_setup,6379
+pca,0
+knn,1755571
+all,1761950

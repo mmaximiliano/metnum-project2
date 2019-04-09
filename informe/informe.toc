@@ -1,0 +1,27 @@
+\babel@toc {spanish}{}
+\contentsline {section}{\numberline {1}Introducci\IeC {\'o}n}{3}
+\contentsline {section}{\numberline {2}Desarrollo}{4}
+\contentsline {subsection}{\numberline {2.1}Dataset de Rese\IeC {\~n}as}{4}
+\contentsline {subsection}{\numberline {2.2}Metodolog\IeC {\'\i }a}{4}
+\contentsline {subsubsection}{\numberline {2.2.1}K vecinos m\IeC {\'a}s cercanos}{5}
+\contentsline {subsubsection}{\numberline {2.2.2}An\IeC {\'a}lisis de Componentes Principales}{5}
+\contentsline {subsubsection}{\numberline {2.2.3}C\IeC {\'a}lculo de autovectores}{5}
+\contentsline {subsubsection}{\numberline {2.2.4}Procedimiento para la clasificaci\IeC {\'o}n con kNN y PCA}{6}
+\contentsline {subsection}{\numberline {2.3}Programaci\IeC {\'o}n}{6}
+\contentsline {subsubsection}{\numberline {2.3.1}Estructuras elegidas}{6}
+\contentsline {subsubsection}{\numberline {2.3.2}Optimizaciones}{6}
+\contentsline {subsection}{\numberline {2.4}Proceso de experimentaci\IeC {\'o}n}{6}
+\contentsline {section}{\numberline {3}Experimentaci\IeC {\'o}n}{8}
+\contentsline {subsection}{\numberline {3.1}Experimentaci\IeC {\'o}n sobre kNN}{8}
+\contentsline {subsubsection}{\numberline {3.1.1}Experimentaci\IeC {\'o}n sobre k}{8}
+\contentsline {subsubsection}{\numberline {3.1.2}Experimentaci\IeC {\'o}n sobre frecuencia de palabras}{10}
+\contentsline {subsubsection}{\numberline {3.1.3}Experimentaci\IeC {\'o}n con distintos tama\IeC {\~n}os del training dataset}{12}
+\contentsline {subsection}{\numberline {3.2}Experimetaci\IeC {\'o}n sobre PCA}{15}
+\contentsline {subsubsection}{\numberline {3.2.1}Experimetaci\IeC {\'o}n sobre tama\IeC {\~n}o del alpha}{15}
+\contentsline {subsubsection}{\numberline {3.2.2}Experimentaci\IeC {\'o}n sobre cantidad de iteraciones del M\IeC {\'e}todo de la Potencia}{16}
+\contentsline {subsubsection}{\numberline {3.2.3}Experimentaci\IeC {\'o}n sobre tama\IeC {\~n}o de training data}{17}
+\contentsline {subsection}{\numberline {3.3}Experimetaci\IeC {\'o}n sobre kNN y PCA}{19}
+\contentsline {section}{\numberline {4}Conclusiones}{21}
+\contentsline {section}{\numberline {5}Referencias}{22}
+\contentsline {section}{\numberline {A}Enunciado}{23}
+\contentsline {section}{\numberline {B}C\IeC {\'o}digo fuente relevante num\IeC {\'e}ricamente}{31}

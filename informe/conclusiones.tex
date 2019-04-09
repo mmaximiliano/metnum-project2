@@ -1,0 +1,31 @@
+\section{Conclusiones}
+%Esta secci´on debe contener las conclusiones generales del trabajo. Se deben mencionar
+%las relaciones de la discusi´on sobre las que se tiene certeza, junto con comentarios
+%y observaciones generales aplicables a todo el proceso. Mencionar tambi´en posibles
+%extensiones a los m´etodos, experimentos que hayan quedado pendientes, etc.
+
+En este trabajo realizamos un análisis del funcionamiento de kNN y PCA para un
+caso muy particular (análisis de polaridad de comentarios de películas), pero
+de gran interés para poder realizar en el futuro un análisis social o de mercado,
+además de por su posible uso en otros tipos de textos.
+
+Con los distintos experimentos que realizamos, pudimos ver que estos
+métodos tiene el potencial de predecir sentimientos con una exactitud
+de hasta el 75\% aproximadamente, que no es para nada despreciable.
+
+Sin embargo, estos resultados los conseguimos al utilizar kNN \textbf{sin PCA}.
+Como vimos en la sección anterior, usar PCA nos presenta un \textit{trade-off}
+entre velocidad y exactitud.
+
+Algo interesante visto en la experimentación fue la relación entre las palabras
+filtradas por frecuencia y la calidad de los resultados.
+En estos, contrario a nuestras expectativas previas, pudimos ver que hay
+palabras poco frecuentes que resultan realmente relevantes.
+Consideramos que un posible estudio a realizar en el futuro podría venir por
+el lado de ver qué palabras concretas son, para tener una mejor comprensión
+de lo que sucede, y probar con una mayor variedad de porcentajes para filtrar palabras.
+
+Finalizando este trabajo, concluimos que kNN es un método simple pero efectivo
+para clasificar, al menos en el contexto particular de este trabajo, y que
+PCA es una buena herramienta para acompañar a kNN cuando necesitamos acelerar
+el mismo, y podemos permitirnos una reducción en la exactitud del análisis.

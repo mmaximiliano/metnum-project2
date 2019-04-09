@@ -1,0 +1,45 @@
+\section{Introducción}
+%Contendr´a una breve explicaci´on de la base te´orica que fundamenta los m´etodos involucrados
+%en el trabajo, junto con los m´etodos mismos. No deben incluirse demostraciones
+%de propiedades ni teoremas, ejemplos innecesarios, ni definiciones elementales (como
+%por ejemplo la de matriz sim´etrica). En vez de definiciones b´asicas es conveniente citar
+%ejemplos de bibliograf´ıa adecuada. Una cita vale m´as que mil palabras.
+
+Cada vez resulta de mayor interés el estudio de la enorme cantidad de datos
+generada y distribuida por Internet. Esta puede contestar preguntas que
+resultan de utilidad para múltiples usos, tanto comerciales como académicos.
+
+A partir de estos intereses surgieron distintas técnicas con este
+objetivo. Llamamos Análisis de Sentimiento, o minería de opinión, al uso de
+distintas herramientas estadísticas, computacionales y lingüísticas,
+con el fin de extraer información de ciertos datos, sobre la emoción, opinión o
+interés de un grupo humano sobre un tema particular.
+
+En el presente trabajo, nos proponemos utilizar algunas de estas herramientas
+en el contexto particular del estudio de polaridad de reseñas de películas
+en IMDb\cite{IMDB}, es decir, para clasificar estas reseñas en ``Positivas'' o ``Negativas''.
+
+En particular, utilizaremos:
+\begin{itemize}
+    \item Modelo de Bag of Words
+    \item Análisis de Componentes Principales (PCA)
+    \item Clasificación mediante k vecinos más cercanos (kNN)
+\end{itemize}
+Las mismas serán explicadas más detalladamente en la siguiente sección.
+
+Tenemos como objetivo estudiar la efectividad de las herramientas utilizadas,
+experimentando con la variación de distintos hiperparámetros y de la cantidad de datos
+suministrados, teniendo en cuenta el tiempo de cómputo tomado.
+Este último punto resulta importante dado que uno no puede esperar indefinidamente
+los resultados de un experimento, pero además es crucial si se desea
+utilizar en un sistema en tiempo real como, por ejemplo, una web que recomiende películas.
+
+
+
+%Poder extraer informaci\'on de lo que mencionan los usuarios en Internet es un tema que est\'a muy de moda hace ya unos cuantos años y que ha tenido su boom con la eclosi\'on de las Redes Sociales\cite{BO}. Un uso potencial de estas opiniones se encuentra en lo comercial: ¿Qu\'e opinan los televidentes de la nueva serie original de Netflix? ¿Hablan en Twitter positivamente de la nueva camiseta de Boca Juniors? ¿Gust\'o la nueva pel\'icula de Marvel?
+%Los intereses sobre este campo trascienden lo comercial, por ejemplo la posibilidad de analizar cuantitativamente las opiniones de los usuarios (y votantes) despierta intereses pol\'iticos: ¿Qu\'e candidato tiene la mejor opini\'on de los votantes? ¿A qu\'e referente pol\'itico critican m\'as en las redes sociales? Son preguntas que atacan muchas consultoras.\\
+
+%El Análisis de sentimiento (también conocido como minería de opinión) se refiere al uso de procesamiento del lenguaje natural (NLP), análisis de texto y lingüística computacional para identificar y extraer información subjetiva de los recursos. Desde el punto de vista de la minería de textos, el análisis de sentimientos es una tarea de clasificación masiva de documentos de manera automática, en función de la connotación positiva o negativa del lenguaje ocupado en el documento.\cite{LIU} Es importante mencionar que estos tratamientos generalmente "se basan en relaciones estadísticas y de asociación, no en análisis lingüístico".\cite{Weiss} \\
+%En términos generales, el análisis de sentimiento intenta determinar la actitud de un interlocutor o usuario con respecto a algún tema o la polaridad contextual general de un documento. La actitud puede ser su juicio o evaluación, estado afectivo (o sea, el estado emocional del autor al momento de escribir), o la intención comunicativa emocional (o sea, el efecto emocional que el autor intenta causar en el lector). \\
+
+%Una tarea básica en análisis de sentimientos es clasificar la polaridad de un texto dado, siendo esta la motivaci\'on del presente trabajo. En el mismo construiremos un analizador de polaridad para las opiniones sobre pel\'iculas de usuarios de IMDB \cite{IMDB}. Para ello, construiremos un clasificador basado en la t\'ecnica de vecinos m\'as cercanos (K-Nearest Neighbors) y reducci\'on de la dimensionalidad con an\'alisis de componentes principales (Principal Component Analysis). Posteriormente, probaremos mediante experimentaci\'on las t\'ecnicas y metedolog\'ias utilizadas, logrando así una primera noci\'on y un primer acercamiento al análisis de sentimiento y sus problem\'aticas.

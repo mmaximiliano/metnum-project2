@@ -1,0 +1,194 @@
+\section{Desarrollo}
+%Deben explicarse los m´etodos num´ericos que utilizaron y su aplicaci´on al problema
+%concreto involucrado en el trabajo pr´actico. Se deben mencionar los pasos que siguieron
+%para implementar los algoritmos, las dificultades que fueron encontrando y la
+%descripci´on de c´omo las fueron resolviendo. Explicar tambi´en c´omo fueron planteadas
+%y realizadas las mediciones experimentales. Los ensayos fallidos, hip´otesis y conjeturas
+%equivocadas, experimentos y m´etodos malogrados deben figurar en esta secci´on, con
+%una breve explicaci´on de los motivos de estas fallas (en caso de ser conocidas).
+
+\subsection{Dataset de Reseñas}
+%El conjunto de datos a utilizar está basado en el Large Movie Review Dataset el cual fue creado para el trabajo de Maas et al.\cite{Maas}. Consta de 50.000 reseñas de películas de obtenidas de IMDB, segmentadas en positivas (aquellas que tuvieron puntaje mayor a 7 estrellas) y negativas (puntaje menor a 4).
+%El dataset está partido exactamente en dos: 25.000 instancias de entrenamiento, y otras 25.000 instancias de testeo. A su vez, las instancias de entrenamiento y testing tienen la mitad de reseñas positivas, y la otra mitad negativas.
+
+Para poder testear las herramientas que utilizaremos para el Análisis de Sentimiento,
+y poder detectar la polaridad dado el texto de una reseña de una película,
+es decir, si esta es negativa o positiva, utilizaremos un
+dataset de 50.000 reseñas de películas obtenidas de IMDb.
+Este está basado en el \textit{Large Movie Review Dataset},
+creado por Maas et al.\cite{Maas}.
+Se encuentran clasificadas en \textit{positivas}
+(aquellas que tuvieron puntaje mayor a 7 estrellas, siendo 25.000 instancias)
+y \textit{negativas}(puntaje menor a 4, obteniendo otras 25.000 instancias),
+de las cuales la mitad de las instancias son de entrenamiento y la otra mitad de testing.
+
+
+\subsection{Metodología}
+%Como algoritmo de clasificación utilizaremos k vecinos más cercanos (kNN, k-Nearest Neighbors). En su versión más simple, este algoritmo considera a cada instancia de entrenamiento (en nuestro caso, cada reseña) como un punto en el espacio euclídeo m-dimensional. Cuando queramos clasificar una instancia como positiva o negativa, buscaremos las k instancias de entrenamiento más cercanas y le daremos la etiqueta mayoritaria entre esos vecinos.\\
+
+Para la clasificación según la polaridad(\textit{positiva} o \textit{negativa})
+utilizaremos el algoritmo de kNN.
+Para ello, este algoritmo considera a cada instancia como un punto en un plano euclídeo
+(el método es descrito en más detalle en la sección \ref{sec:knn}).
+
+%La entrada de kNN deben ser vectores de $\mathbb{R}^{m}$, para un \textit{m} fijo, uno por cada instancia. Para convertir cada reseña en un vector de longitud fija utilizamos el modelo de Bolsa de Palabras (\textit{Bag of Words o BoW}). Dado un vocabulario precalculado (y ordenado) de palabras, ignoramos el orden de las palabras en un texto y sólo contamos cuántas veces apareció en  éste. Luego, en la coordenada \textit{i}-ésima tendremos cuántas veces apareció la palabra número \textit{i} en ese texto.\\
+
+Para poder expresar a cada reseña como un vector de \textit{n} coordenadas,
+para un \textit{n} fijo, y poder usar  el algoritmo de kNN,
+utilizaremos el modelo de Bolsa de Palabras (\textit{Bag of Words o BoW}).
+Este es un método que se utiliza en el procesado del lenguaje para representar
+documentos ignorando el orden de las palabras. Para ello se cuenta cuantas veces aparece
+cada palabra en una reseña, basándose en un diccionario con todas las palabras utilizadas.
+De esta forma, obtenemos un vector de la misma
+dimensión del tamaño del vocabulario que representa esta información.
+
+El problema que presenta este modelo a simple vista es que si tenemos
+un diccionario demasiado grande, generaremos vectores de igual dimensión para cada reseña.
+En nuestro caso, el diccionario es de aproximadamente 160.000 palabras.
+Para tratar de eludir este problema, experimentaremos filtrando
+dos tipos de palabras con distintos umbrales y veremos cuál da mejores resultados:
+\begin{itemize}
+	\item \textbf{Aquellas con frecuencia alta:} casi siempre preposiciones, conjugaciones de verbos comunes.
+	\item \textbf{Palabras con muy baja frecuencia:} no aportan información significativa para la mayoría de estos problemas, y no nos permiten encontrar un patrón común entre las diferentes clases a separar
+\end{itemize}
+
+El procedimiento de \textit{tokenización} y construcción de vectores
+con \textit{Bag of Words} fue programado y entregado por la cátedra.
+Por eso, sólo analizaremos los umbrales y luego nos enfocaremos en el resto de las herramientas numéricas.
+
+También nos resulta interesante experimentar con el tamaño del dataset
+de entrenamiento y los hiperparámetros de los métodos numéricos empleados.
+Tendremos en cuenta al analizar el constante \textit{trade-off} entre la exactitud y tiempo de ejecución de la clasificación.
+
+\subsubsection{K vecinos más cercanos}
+\label{sec:knn}
+Para clasificar las reseñas, vamos a utilizar el método de los k vecinos más cercanos (kNN).
+Dada una reseña a clasificar, modelada como vector (como explicamos anteriormente),
+el método consta de buscar las k reseñas del dataset de \textit{training} que
+resultan más cercanas.
+En particular, utilizaremos la \textit{Norma Manhattan} para medir distancias,
+ya que nos interesa medir la cantidad de \textit{tokens} que \textbf{no} tienen en común.
+
+Luego, vemos la moda de estas k reseñas y la usamos para clasificar la nuestra.
+Es decir, si la mayoría de estas k reseñas son positivas, clasificaremos a la
+reseña como positiva. Caso contrario, como negativa.
+Utilizamos siempre valores impares de k, evitando empates que requerirían un
+criterio arbitrario de desempate.
+
+% El procedimiento puede ser resumido en los siguientes pasos:
+% \begin{itemize}
+% 	\item Se define una base de datos de entrenamiento como el conjunto $ D = \lbrace x_{i} : i = 1,...,n\rbrace.$
+% 	\item Luego, se define m como el número total de dimensiones de la \textit{i}-ésima instancia almacenada por filas y representada como un vector $x_{i} \in \mathbb{R}^{m}$.
+% 	\item De esta forma, dada una instancia $x \in \mathbb{R}^{m}$, talque $x \not\in D$, para clasificarla simplemente se busca el subconjunto de los \textit{k} vectores $\lbrace x_{i}\rbrace \subseteq D$ más cercanos a $x$, y se le asigna la clase que posea el mayor número de repeticiones dentro de ese subconjunto, es decir, la moda.
+% \end{itemize}
+
+Este algoritmo depende fuertemente del tamaño de nuestros vectores, ya que
+para calcular la distancia entre dos reseñas necesitamos recorrer ambos.
+Es por eso que surge la idea de reducir las dimensiones, intentando quedarse
+con la información más relevante. Para eso, se considera el
+\textbf{Análisis de Componentes Principales} (PCA), el cual describiremos a continuación.
+
+% El algoritmo de los vecinos más cercanos es muy sensible a la dimensión de los objetos y a la variación de las componentes del vector instancia. Es por eso, que las instancias dentro de la base de datos se suelen preprocesar para lidiar con estos problemas.
+% Teniendo en cuenta esto, una alternativa interesante de preprocesamiento es buscar reducir la cantidad de dimensiones de las muestras para trabajar con una cantidad de variables más acotada buscando que las nuevas variables tengan información representativa para clasificar los objetos de la base de entrada.
+% En esta dirección, consideraremos el método de reducción de dimensionalidad Análisis de Componentes Principales o PCA (por su sigla en inglés) dejando de lado los procesamientos de datos que se puedan realizar previamente o alternativamente a aplicar PCA.
+
+\subsubsection{Análisis de Componentes Principales}
+\label{sec:pca}
+El Método de Análisis de Componentes Principales se basa en la idea de que,
+dado un conjunto de datos en forma de vectores (como puede ser nuestro \textit{BoW}),
+hay dimensiones o \textit{componentes} que dan mayor información que otras.
+Por eso, resulta interesante quedarse solo con estas componentes,
+eliminando las demás, que pueden resultar redundantes o incluso meter ruido.
+De esta forma se logra agilizar los cómputos posteriores y quizá incluso mejorar los resultados obtenidos,
+trabajando con un vector de menor tamaño pero con información relevante y menos ruido.
+
+Para realizar este procesamientos, utilizamos la \textbf{Matriz de Covarianza}.
+Recordemos que la covarianza nos dice en qué medida dos variables
+(en nuestro caso, los \textit{tokens}) varían de forma similar.
+A partir de esta matriz, podemos calcular las componentes principales
+quedándonos con los $\alpha$ autovectores asociados a los autovalores
+de mayor valor absoluto
+\footnote{Pueden verse más detalles sobre los cálculos relacionados en
+http://www.cs.otago.ac.nz/cosc453/student\_tutorials/principal\_components.pdf}.
+
+Con estos autovectores, definimos la \textit{transformación característica},
+con la matriz formada por ellos puestos como fila.
+De esta forma, dicha transformación toma vectores en $\mathbb{R}^{n}$ y devuelve
+vectores en $\mathbb{R}^{\alpha}$, disminuyendo dimensiones pero de forma que
+la información ``más relevante'' no se pierda.
+
+El valor del hiperparámetro $\alpha$ nos da la oportunidad de experimentar,
+buscando el que mejor funcione para nuestro contexto, y para ver su relación
+con otros hiperparámetros.
+
+% El método de análisis de componentes principales o PCA consiste en lo siguiente.
+% Sea $ \mu = (x_{1} + . . . + x_{n})/n$ el promedio coordenada a coordenada de los datos $D = \lbrace x_{i}: i = 1,...,n\rbrace$ tal que $x_{i} \in \mathbb{R}^{m}$. Definimos $X \in \mathbb{R}^{nxm}$ como la matriz que contiene en la i-ésima fila al vector $(x_{i} - \mu)^{t}/\sqrt{n - 1}$. La matriz de covarianza de la muestra $X$ se define como $M = X^{t}X$.
+%
+% Siendo $v_{j}$ el autovector de $M$ asociado al \textit{j}-ésimo autovalor, al ser ordenados por su valor absoluto, definimos para $i = 1,...,n$ la \textit{transformación característica} de $x_{i}$ como el vector $\textbf{tc}(x_{i}) = (v_{1}x_{i},v_{2}x_{i},...,v_{\alpha}x_{i})^{t} \in \mathbb{R}^{\alpha}$, donde $\alpha \in \lbrace 1,...,m\rbrace$ es un parámetro de la implementación. Este proceso corresponde a extraer las $\alpha$ primeras componentes principales de cada muestra. La idea es que $\textbf{tc}(x_{i})$ resuma la información más relevante de la muestra, descartando los dimensiones menos significativas.
+%
+% El método PCA previamente presentado sirve para realizar una transformación de los datos de entrada a otra base y así trabajar en otro espacio con mejores propiedades que el original.
+
+\subsubsection{Cálculo de autovectores}
+Como se mencionó en la sección anterior, el método PCA utiliza los autovectores de la matriz de covarianza.
+Para obtenerlos, utilizamos el Método de la Potencia\cite{pot}.
+
+Siendo este un método iterativo, resulta de interés experimentar con el criterio de terminación.
+Dado que cortamos el algoritmo luego de una cantidad determinada de iteraciones,
+decidimos ver como afecta este número a la exactitud del resultado.
+
+\subsubsection{Procedimiento para la clasificación con kNN y PCA}
+Una vez elegidos los hiperparámetros, el proceso de clasificación de una reseña
+nueva consta de su tokenización y pasaje al modelo de \textit{Bag of Words},
+el cálculo de su transformación característica (en caso de usar PCA),
+la búsqueda de los vecinos más cercanos del dataset de \textit{training}
+(de acuerdo con la \textit{Norma Manhattan}) y finalmente,
+la clasificación de acuerdo a la moda en estos vecinos.
+
+Previamente, en caso de usar PCA, es necesario realizar el cálculo de las
+componentes principales sobre el dataset de \textit{training},
+como fue explicado en la sección \ref{sec:pca}.
+
+
+%Una vez elegidos los parámetros $k$ del $kNN$ y $\alpha$ de PCA, el proceso completo de clasificación de reseñas se puede resumir como:
+% \begin{enumerate}
+% 	\item Ingresa una nueva reseña $x$ no presente en el conjunto de entrenamiento.
+% 	\item Se computa el $x_{b} = BoW (x)$
+% 	\item Se calcula $\textbf{tc}(x_{b})$ la transformación característica
+% 	\item Se compara con cada $\textbf{tc}(x_{bi})$, $\forall x_{bi} \in Db$ donde $D_{b}$ es el dataset de training procesado con $BoW$
+% 	\item Se elige la moda entre los $k$ vecinos más cercanos
+% 	\item Se devuelve la clase de la moda (“pos” o “neg”) como el resultado de la clasificación.
+% \end{enumerate}
+
+\subsection{Programación}
+Pasamos a contar las decisiones más significativas que tomamos a la hora de implementar los métodos en C++. Para más detalles, ver el código de los mismos en los apéndices o  el código fuente entregado junto a este informe.
+
+\subsubsection{Estructuras elegidas}
+Para representar las reseñas, utilizamos \textit{vector<double>} de la STL, dada su simplicidad y buen uso de la memoria caché y para las matrices utilizamos \textit{vector<vector<double>\null>}.
+
+También vale la pena destacar que para buscar los k vecinos más cercanos, guardamos las distancias en un vector, para luego poder construir un \textit{MinHeap}. A partir de este, podemos conseguir el mejor vecino y quitarlo del \textit{MinHeap} en $O(lg(n))$. Este método resulta mejor a ordenar el vector de distancias en términos de complejidad, dado que conseguir los k vecinos más cercanos toma, sin contar el cálculo de distancias, $O(k \cdot lg(n))$, contra un $O(n \cdot lg(n))$ del ordenamiento.
+
+\subsubsection{Optimizaciones}
+Dada la lentitud en la ejecución de los experimentos decidimos buscar alternativas. El mayor problema lo teníamos principalmente en la construcción de la matriz de covarianza necesaria para PCA,  por eso decidimos realizar cálculos en paralelo utilizando \textit{threads} para calcularla. Además, agregamos una opción a nuestro ejecutable para que utilice la matriz de covarianza y autovectores calculados en alguna ejecución anterior de existir.
+
+
+\subsection{Proceso de experimentación}
+Luego de terminado el desarrollo del programa principal,
+decidimos realizar los siguientes experimentos:
+
+\begin{itemize}
+	\item Calidad de los resultados al variar:
+	\begin{itemize}
+		\item El parámetro k de kNN, sin usar PCA
+		\item La frecuencia mínima y máxima de palabras filtradas, sin usar PCA
+		\item El tamaño del \textit{dataset} de training, con y sin PCA
+		\item El parámetro alpha de PCA
+		\item La cantidad de iteraciones antes de frenar el Método de la Potencia
+	\end{itemize}
+	\item Tiempos de ejecución al:
+	\begin{itemize}
+		\item Realizar kNN, con PCA previo y sin PCA
+		\item Realizar kNN con y sin PCA previo, variando el tamaño del \textit{dataset} de training
+	\end{itemize}
+\end{itemize}
+
+Explicaremos con más detalles cada uno de estos experimentos en la sección correspondiente.
